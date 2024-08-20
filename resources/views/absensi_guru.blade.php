@@ -34,7 +34,7 @@
 			var end = new Date();
             var time = new Date().getTime();
 
-            if (time > start.setHours(0, 0, 1) && time < end.setHours(12, 0, 0)){
+            if (time > start.setHours(12, 0, 1) && time < end.setHours(24, 0, 0)){
                 document.getElementById("form_masuk").style.display = "block";
                 document.getElementById("form_pulang").style.display = "none";
                 const scanner = document.getElementById('nik');
