@@ -86,7 +86,7 @@ class AbsensiGuruController extends Controller
             'guru_id' => $guru_id,
             'tanggal_absen_guru' => date('y-m-d'),
             'jam_absen_datang_guru' => $jam_masuk,
-            'jam_absen_pulang_guru' => '-',
+            'jam_absen_pulang_guru' => '00:00:00',
             // 'status_ke' => '-',
             'keterangan_kehadiran_guru' => '-',
             'status_kehadiran_guru' => $status,
