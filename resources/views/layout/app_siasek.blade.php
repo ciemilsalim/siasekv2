@@ -28,8 +28,6 @@
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
                             <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="/absensi">Absensi</a></li>
-                            <li class="nav-item"><a class="nav-link" href="projects.html">Data Pokok</a></li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Bimbingan Konseling</a></li>
                             <li class="nav-item"><a class="nav-link" href="/admin">login</a></li>
                         </ul>
                     </div>
