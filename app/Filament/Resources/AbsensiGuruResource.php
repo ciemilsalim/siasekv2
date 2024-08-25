@@ -2,27 +2,32 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AbsensiGuruResource\Pages;
-use App\Filament\Resources\AbsensiGuruResource\RelationManagers;
-use App\Models\AbsensiGuru;
-use App\Models\Guru;
 use DateTime;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\TimePicker;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Guru;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Date;
-
+use App\Models\AbsensiGuru;
+use Illuminate\Support\Carbon;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use function Laravel\Prompts\select;
+use Illuminate\Support\Facades\Date;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Filters\Indicator;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TimePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+
+use Filament\Forms\Components\DateTimePicker;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\AbsensiGuruResource\Pages;
+use App\Filament\Resources\AbsensiGuruResource\RelationManagers;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
 
 class AbsensiGuruResource extends Resource
 {
@@ -68,6 +73,7 @@ class AbsensiGuruResource extends Resource
             ->columns([
                 TextColumn::make('guru.nama_guru')
                     ->label('Nama')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('tanggal_absen_guru')
                     ->label('Tanggal Absen')
@@ -77,6 +83,7 @@ class AbsensiGuruResource extends Resource
                     ->label('Jam Datang')
                     ->sortable(),
                 TextColumn::make('jam_absen_pulang_guru')
+                    ->sortable()
                     ->label('Jam Pulang'),
                 TextColumn::make('status_kehadiran_guru')
                     ->label('Status'),
@@ -84,7 +91,39 @@ class AbsensiGuruResource extends Resource
                     ->label('Keterangan'),
             ])
             ->filters([
-                //
+                Filter::make('tanggal_absen_guru')
+                ->form([
+                    DatePicker::make('from')
+                        ->default(now()),
+                    DatePicker::make('until')
+                        ->default(now()),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['from'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('tanggal_absen_guru', '>=', $date),
+                        )
+                        ->when(
+                            $data['until'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('tanggal_absen_guru', '<=', $date),
+                        );
+                })
+                ->indicateUsing(function (array $data): array {
+                    $indicators = [];
+             
+                    if ($data['from'] ?? null) {
+                        $indicators[] = Indicator::make('Created from ' . Carbon::parse($data['from'])->toFormattedDateString())
+                            ->removeField('from');
+                    }
+             
+                    if ($data['until'] ?? null) {
+                        $indicators[] = Indicator::make('Created until ' . Carbon::parse($data['until'])->toFormattedDateString())
+                            ->removeField('until');
+                    }
+             
+                    return $indicators;
+                })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
