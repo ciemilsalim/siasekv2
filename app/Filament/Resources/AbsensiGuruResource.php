@@ -95,8 +95,7 @@ class AbsensiGuruResource extends Resource
                 ->form([
                     DatePicker::make('from')
                         ->default(now()),
-                    DatePicker::make('until')
-                        ->default(now()),
+                    DatePicker::make('until'),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
