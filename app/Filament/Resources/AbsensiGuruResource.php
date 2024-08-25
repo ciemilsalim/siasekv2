@@ -18,11 +18,12 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
 
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\DateTimePicker;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AbsensiGuruResource\Pages;
@@ -96,7 +97,7 @@ class AbsensiGuruResource extends Resource
                     DatePicker::make('from')
                         ->default(now()),
                     DatePicker::make('until'),
-                ])
+                ])->columns(2)
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
                         ->when(
@@ -123,7 +124,10 @@ class AbsensiGuruResource extends Resource
              
                     return $indicators;
                 })
-            ])
+            ], layout: FiltersLayout::AboveContent)
+            ->filtersFormColumns(2)
+            ->filtersFormWidth('4xl')
+            
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
