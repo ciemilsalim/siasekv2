@@ -73,15 +73,4 @@ class AdminPanelProvider extends PanelProvider
             ]);
     }
 
-    // public function boot():void
-    // {
-    //     Filament::serving(function (){
-    //         Filament::registerUserMenuItems([
-    //             UserMenuItem::make()
-    //                 ->label('Pengaturan')
-    //                 ->url(PeriodeResource::getUrl())
-    //                 ->icon('heroicon-o-cog-6-tooth'),
-    //         ]);
-    //     });
-    // }
 }
