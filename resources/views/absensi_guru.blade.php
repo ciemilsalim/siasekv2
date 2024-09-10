@@ -22,6 +22,23 @@
                                 <input type="text" name="nik" class="form-control no-border-input" id="nik_guru" placeholder="Absen pulang">
                             </form>    
                         </div><br><br>
+                        <table class="table font-mute">
+                            <tr>
+                                <th>Jam Masuk</th>
+                                <th>Jam Pulang</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Senin, Jumat : 07.00 AM</p>
+                                    <p>Selasa, Rabu, Kamis : 07.15 AM</p>
+                                </td>
+                                <td>
+                                    <p>Senin, Selasa, Rabu, Kamis : 15.00 PM</p>
+                                    <p>Jumat : 11.00 AM</p>
+                                </td>
+                            </tr>
+                        </table>
+                       
                         <p class="text-muted">melakukan absen untuk murid klik <a href="/absensi">disini</a> </p>
                     </div>
                 </div>
