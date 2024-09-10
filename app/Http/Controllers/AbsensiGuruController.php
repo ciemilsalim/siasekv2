@@ -159,10 +159,7 @@ class AbsensiGuruController extends Controller
             return redirect('/absensi_guru');
         }
 
-        if ($checkOut <= '15:00:00') {
-            Alert::warning('Maaf, Absen Pulang dimulai jam 15:00 PM');
-            return redirect('/absensi_guru');
-        }
+        
         
         $hari_absen = Carbon::parse($tanggal_absen)->format('l');
 
@@ -171,8 +168,25 @@ class AbsensiGuruController extends Controller
             return redirect('/absensi_guru');
         }
 
-        if ($hari_absen !== 'Saturday' || $hari_absen !== 'Sunday') {
+        //pengaturan pulang selain hari jumat
+        if ($hari_absen !== 'Friday') {
+            if ($checkOut <= '15:00:00') {
+                Alert::warning('Maaf, Absen Pulang dimulai jam 15:00 PM');
+                return redirect('/absensi_guru');
+            };
             if ($checkOut >= '14:00:00' && $checkOut <= '17:30:00' ) {
+                $keterangan = 'hadir';
+            };
+            
+        }
+
+        //pengaturan pulang hari jumat
+        if ($hari_absen == 'Friday') {
+            if ($checkOut <= '10:45:00') {
+                Alert::warning('Maaf, Absen Pulang dimulai jam 11:00 AM');
+                return redirect('/absensi_guru');
+            };
+            if ($checkOut >= '10:46:00' && $checkOut <= '17:30:00' ) {
                 $keterangan = 'hadir';
             };
         }
