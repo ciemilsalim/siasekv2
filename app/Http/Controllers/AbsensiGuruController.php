@@ -51,7 +51,7 @@ class AbsensiGuruController extends Controller
             return redirect('/absensi_guru');
         }
 
-        if ($jam_masuk > '09:00:00') {
+        if ($jam_masuk > '10:00:00') {
             Alert::error('Gagal!', 'Anda diluar jam absensi');
             return redirect('/absensi_guru');
         }
@@ -62,23 +62,23 @@ class AbsensiGuruController extends Controller
         }
 
 
-        if ($hari_absen == 'Monday') {
+        if ($hari_absen == 'Monday' || $hari_absen == 'Friday') {
             if ($jam_masuk >= '06:00:00' && $jam_masuk <= '07:00:00' ) {
-                $status = 'hadir';
-                $keterangan = 'hadir';
+                $status = 'ontime';
+                $keterangan = '-';
             }else{
                 $status = 'terlambat';
-                $keterangan = 'hadir';
+                $keterangan = '-';
             };
         }
 
-        if ($hari_absen == 'Tuesday' || $hari_absen == 'Wednesday' || $hari_absen == 'Thursday' || $hari_absen == 'Friday') {
+        if ($hari_absen == 'Tuesday' || $hari_absen == 'Wednesday' || $hari_absen == 'Thursday') {
             if ($jam_masuk >= '06:00:00' && $jam_masuk <= '07:15:00' ) {
                 $status = 'ontime';
-                // $keterangan = 'hadir';
+                $keterangan = '-';
             }else{
                 $status = 'terlambat';
-                // $keterangan = 'hadir';
+                $keterangan = '-';
             };
         }
 
@@ -88,7 +88,7 @@ class AbsensiGuruController extends Controller
             'jam_absen_datang_guru' => $jam_masuk,
             'jam_absen_pulang_guru' => '00:00:00',
             // 'status_ke' => '-',
-            'keterangan_kehadiran_guru' => '-',
+            'keterangan_kehadiran_guru' => $keterangan,
             'status_kehadiran_guru' => $status,
             // 'keterangan' => $keterangan
         ]);
@@ -170,23 +170,30 @@ class AbsensiGuruController extends Controller
 
         //pengaturan pulang selain hari jumat
         if ($hari_absen !== 'Friday') {
-            if ($checkOut <= '15:00:00') {
+            if ($checkOut <= '14:00:00') {
                 Alert::warning('Maaf, Absen Pulang dimulai jam 15:00 PM');
                 return redirect('/absensi_guru');
             };
-            if ($checkOut >= '14:00:00' && $checkOut <= '17:30:00' ) {
+            if ($checkOut >= '14:00:01' && $checkOut <= '17:30:00' ) {
+                $keterangan = 'Pulang cepat';
+            };
+            if ($checkOut >= '15:00:00' && $checkOut <= '17:30:00' ) {
                 $keterangan = 'hadir';
             };
+            
             
         }
 
         //pengaturan pulang hari jumat
         if ($hari_absen == 'Friday') {
-            if ($checkOut <= '10:45:00') {
+            if ($checkOut <= '10:00:00') {
                 Alert::warning('Maaf, Absen Pulang dimulai jam 11:00 AM');
                 return redirect('/absensi_guru');
             };
-            if ($checkOut >= '10:46:00' && $checkOut <= '17:30:00' ) {
+            if ($checkOut >= '10:00:01' && $checkOut <= '17:30:00' ) {
+                $keterangan = 'Pulang cepat';
+            };
+            if ($checkOut >= '11:00:00' && $checkOut <= '17:30:00' ) {
                 $keterangan = 'hadir';
             };
         }
